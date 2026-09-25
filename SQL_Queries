@@ -1,1 +1,96 @@
+-- 1 CREATING A DATABASE
+Create database Company_DB;
+ 
+-- Use DB
+use Company_DB;  
 
+-- 2 CREATING A TABLE 
+create table employees(
+	emp_id 	INT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    gender CHAR(1) NOT NULL,
+    salary DECIMAL(10,2) NOT NULL,
+    department VARCHAR(50)
+    );                                
+ -- 3  INSERTING DATA....   
+INSERT into employees(emp_id, first_name, last_name, gender, salary, department) values 
+	(101,'Anish', 'Prajapati', 'M', '80000', 'IT'),
+	(102,'Prashant','Kumar','M','55000','IT'),
+    (103,'Rahul', 'Sharma','M','48000','HR'),
+    (104,'Priya','Singh','F','62000','Finance'),
+    (105,'Aman','Verma','M','51000','Sales'),
+    (106,'Neha','Gupta','F','59000','IT');
+    
+-- 4 Display the record
+Select * from employees;   
+  
+-- 5 Display all details of employees whose department is IT.
+Select * from employees where department = 'IT';
+
+-- 6 Display all employees whose salary is greater than 50,000.
+Select * from employees where department <> 'IT';
+
+-- 7  Display all employees who:
+-- belong to the IT department AND
+-- have a salary greater than 55,000.
+Select * from employees where department = 'IT' and Salary > 50000;
+
+
+-- 8  Display all employees who:
+-- belong to the IT department OR
+-- belong to the HR department.
+Select * from employees where department IN ('IT' , 'HR');
+
+-- 9 Display all employees who:
+-- are in the IT department OR
+-- are in the HR department
+Select * from employees where department IN ('IT', 'HR') and salary > 50000;
+
+-- 10 Display all employees whose salary is between 50,000 and 60,000 (inclusive).
+Select *  from employees where salary NOT between 50000 and 60000; 
+
+Select * from employees where department NOT IN('IT', 'HR');
+
+--whose salary is 48000, 55000, or 62000.
+select * from employees where salary IN (48000, 55000, 62000);
+
+Select * from employees where department NOT IN('IT') and salary between 50000 and 80000 and gender != 'M';
+
+Select * from employees where department NOT IN('HR','Sales') and Salary between 55000 and 80000 and emp_id !=101;
+
+
+-- Display all employees whose first name starts with the letter A.
+Select * from employees where first_name LIKE 'A%';
+
+-- Order by 
+
+-- Sort employees by department A → Z and then salary High → Low.
+SELECT first_name, salary , department
+FROM employees
+ORDER BY first_name ASC , salary DESC ;
+
+-- Find the highest-paid employee
+SELECT first_name, salary , department
+FROM employees
+ORDER BY salary DESC LIMIT 1;
+
+
+-- Find the lowest-paid employee
+Select first_name, salary, department 
+from employees
+Order by salary ASC LIMIT 1;
+
+
+-- Display female employees sorted by salary High → Low.
+Select first_name, salary, department 
+from employees
+where gender = 'F'
+Order by salary DESC ;
+
+
+-- are not in HR, salary is between 50,000 and 80,000, sort salary from highest to lowest
+Select first_name, salary, department 
+from employees
+where department NOT IN('HR') and salary between 50000 and 80000
+Order by salary DESC ;
