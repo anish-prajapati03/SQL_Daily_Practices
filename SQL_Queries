@@ -94,3 +94,108 @@ Select first_name, salary, department
 from employees
 where department NOT IN('HR') and salary between 50000 and 80000
 Order by salary DESC ;
+
+-- group by
+
+-- Find the number of employees in each department.
+Select department , count(*) from employees
+group by department ;
+
+-- Find the number of employees for each gender.
+Select gender , count(gender) 
+from employees
+group by gender ;
+
+-- Find the number of employees in each department and display the department name.
+Select department , count(*) 
+from employees 
+group by department;
+
+-- Find the total salary for each department.
+Select department , sum(salary) 
+from employees 
+group by department;
+
+
+-- Find the total salary for each gender.
+select gender , sum(salary) from employees
+group by gender;
+
+-- Find the average salary of each department.
+Select department , AVG(salary) 
+from employees 
+group by department;
+
+
+Select first_name, MAX(salary)
+from employees
+group by first_name LIMIT 1;
+
+-- Find the number of employees in each department, but only consider employees whose salary is greater than 50,000.
+Select department, count(*) from employees
+where salary > 50000
+group by department;
+
+ -- SELECT->FROM->WHERE->GROUP BY->ORDER BY
+ 
+ 
+ -- Find the total salary of IT and HR employees, grouped by department.
+ Select department ,sum(salary)
+ from employees
+ where department IN('IT','HR')
+ group by department;
+ 
+ 
+ select department , count(*) AS emp_count
+ from employees
+ group by department 
+ order by emp_count DESC;
+ 
+-- Second Highest salary 
+SELECT first_name, salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;
+
+-- Having and DISTINCT 
+
+-- Find departments having more than 1 employee.
+Select department, count(*) from employees
+group by department
+having count(*)>1 ;
+
+-- Find departments where the average salary is greater than 55,000.
+Select department, AVG(salary) from employees
+group by department
+having AVG(salary) > 55000 ; 
+
+-- Find departments where the total salary is greater than 100,000.
+Select department, SUM(salary) from employees
+group by department
+having SUM(salary) > 100000 ; 
+
+-- Find departments having at least 2 employees, and sort them by employee count from highest to lowest.
+select department ,count(*) from employees 
+group by department 
+having count(*)>=2 
+order by count(*) desc ; 
+
+-- 1) Display all unique departments from the employees table.
+Select DISTINCT Department from employees;
+
+
+Select distinct Gender from employees;
+
+
+-- Display all unique combinations of department and gender.
+Select distinct department, Gender from employees;
+
+-- Display unique departments, but exclude IT.
+Select distinct department from employees
+Where Department NOT IN('IT');
+
+
+-- Display unique departments where salary is greater than 50,000, and sort departments alphabetically.
+Select distinct department from employees
+where salary > 50000
+order by department ASC;
