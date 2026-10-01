@@ -194,6 +194,137 @@ Select distinct department, Gender from employees;
 Select distinct department from employees
 Where Department NOT IN('IT');
 
+-- JOIN ***
+
+use Company_DB; 
+
+Create table departments(
+   department_id INT,
+   department_name VARCHAR(50),
+   manager VARCHAR(50)
+);
+
+insert into departments(department_id,department_name,manager) 
+VALUES
+(1, 'IT', 'Rajesh'),
+(2, 'HR', 'Sunita'),
+(3, 'Finance', 'Vikram'),
+(4, 'Sales', 'Meena'),
+(5, 'Marketing', 'Arjun');
+
+
+-- Inner join
+-- ** using an INNER JOIN between: employees, departments
+Select e.fname,
+	   d.dept_name
+	From employees e
+    INNER JOIN department d
+    on e.dept_id = d.dept_id;
+   
+-- 1) Display the employee's first name, salary, and department manager using an INNER JOIN.
+select e.first_name , e.salary,d.department_name, d.manager from employees e
+INNER JOIN departments d
+ON e.department = d.department_name;
+
+-- 2) Display the first_name, department, and manager of employees who work in the IT department.
+Select  e.first_name , e.department , d.manager from employees e
+INNER JOIN departments d
+ON e.department = d.department_name  
+where e.department = 'IT';
+
+-- 3) Display the first_name, salary, department, and manager of employees whose salary is greater than 55,000.
+Select e.first_name,e.salary, e.department , d.manager from employees e
+INNER JOIN departments d
+ON e.department =d.department_name
+where e.salary > 55000 ;
+
+-- 4) Display the employee first_name, department, manager, and salary, and sort the employees by salary from highest to lowest.
+Select e.first_name,e.salary, e.department , d.manager from employees e
+INNER JOIN departments d
+ON e.department =d.department_name
+order by e.salary DESC ;
+
+
+INSERT INTO employees
+(emp_id, first_name, last_name, gender, salary, department)
+VALUES
+(107, 'Ravi', 'Mehta', 'M', 45000, 'Admin');
+
+-- Left JOIN --> Display all employees along with their department manager using a LEFT JOIN.
+Select e.first_name, e.department, d.manager from employees e
+LEFT JOIN departments d
+ON e.department = d.department_name;
+
+-- 44 Display all employees along with their department names, even if an employee does not have a matching department.
+Select e.fname,
+	   d.dept_name 	
+	from employees e LEFT JOIN department d
+on e.fname = d.dept_id;
+
+
+
+Select e.first_name, e.department, d.manager from employees e
+LEFT JOIN departments d
+ON e.department = d.department_name
+where e.salary > 50000;
+
+
+-- Find all departments that have NO employees.
+Select d.department_name , e.first_name from  departments d
+LEFT JOIN employees e
+ON d.department_name = e.department
+Where e.first_name IS NULL ;
+
+-- Right Join
+-- ** Display all departments, including those that have no employees.
+select e.first_name, d.department_name
+	from employees e 
+RIGHT JOIN department d
+on d.dept_id = d.dept_id;
+
+-- Display all departments and their employees using RIGHT JOIN.
+Select d.department_name, e.first_name from departments d
+RIGHT JOIN employees e
+ON d.department_name = e.department;
+
+-- 
+SELECT e.first_name, d.department_name
+FROM employees e
+LEFT JOIN departments d
+ON e.department = d.department_name
+WHERE d.department_name IS NULL;
+
+
+select d.department_name , e.first_name from departments d
+LEFT JOIN employees e
+ON e.department = d.department_name
+where e.first_name IS NULL;
+
+
+Select e.first_name, d.department_name from employees e
+LEFT JOIN departments d
+ON e.department = d.department_name
+where d.department_name IS NULL;
+
+
+-- Full outer join
+-- Display all employees and all departments, even when there is no matching record.
+select e.first_name,d.department_name from employees e
+Left join departments d
+ON e.department= d.department_name 
+union
+select e.first_name,d.department_name from employees e
+Right join departments d
+ON e.department= d.department_name ;
+
+
+
+-- Cross Join
+-- Display every employee name with every department name.
+Select e.first_name, d.department_name from employees e
+CROSS join departments d ;
+
+
 
 -- Display unique departments where salary is greater than 50,000, and sort departments alphabetically.
 Select distinct department from employees
