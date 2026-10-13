@@ -324,6 +324,116 @@ ON e.department= d.department_name ;
 Select e.first_name, d.department_name from employees e
 CROSS join departments d ;
 
+-- SUBQUERY
+-- Find the employee(s) who have the highest salary using a subquery.
+Select first_name, salary from employees 
+where salary = (
+   select Max(salary)
+   from employees
+);
+ 
+ -- Find all employees whose salary is greater than the average salary of all employees.
+SELECT first_name, salary
+FROM employees
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employees
+);
+
+-- Find all employees who work in a department where at least one employee earns more than ₹60,000.
+Select first_name, department, salary from employees 
+where department IN (
+        Select department from employees 
+        where salary > 60000 );
+
+-- Find all employees whose salary is less than Anish's salary.
+Select first_name, department, salary from employees
+where salary < ( 
+     select salary from employees
+     where first_name = 'Anish' );
+     
+-- Find all employees who earn more than the average salary of employees in the IT department.
+Select first_name, department, salary from employees
+where salary > (
+    select AVG(salary) from employees
+    where department = 'IT'
+);
+
+-- Find employees whose department belongs to departments where someone earns more than 60,000.
+Select first_name, department , salary from employees
+where department IN (
+     select department from employees
+     where salary > 60000
+);
+
+-- Find employees who earn the same salary as another employee.
+Select first_name, salary from employees
+where salary In (
+   Select salary from employees
+   group by salary
+   having count(*) > 1
+);
+
+
+-- Find employees whose salary is greater than the average salary of their own department.
+SELECT first_name, department, salary
+FROM employees e
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employees
+    WHERE department = e.department
+);
+
+-- Find employees who earn the maximum salary in their own department.
+SELECT  first_name,department, salary
+from employees e
+Where salary = (
+      Select Max(salary) 
+      from employees
+      where department = e.department
+      );
+
+
+-- Find all departments that have at least one employee.
+Select d.department_name from departments d
+where exists (
+     Select 1 from employees e
+     where e.department = d.department_name
+);
+
+-- Find departments that have NO employees.
+SELECT d.department_name
+FROM departments d
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM employees e
+    WHERE e.department = d.department_name
+);
+
+-- Derived Table --> Find departments whose average salary is greater than ₹55,000 using a subquery in the FROM clause.
+Select * from (
+      Select department ,Avg(salary) as asal from employees
+      group by department
+) as Dept_avg
+where asal>55000;
+
+
+-- Find the department with the highest average salary using a subquery in the FROM clause.
+SELECT *
+FROM (
+    SELECT department, AVG(salary) AS asal
+    FROM employees
+    GROUP BY department
+) AS dept_avg
+WHERE asal = (
+    SELECT MAX(asal)
+    FROM (
+        SELECT AVG(salary) AS asal
+        FROM employees
+        GROUP BY department
+    ) AS avg_table
+);
+
 
 
 -- Display unique departments where salary is greater than 50,000, and sort departments alphabetically.
