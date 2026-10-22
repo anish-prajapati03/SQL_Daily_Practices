@@ -435,8 +435,40 @@ WHERE asal = (
 );
 
 
-
 -- Display unique departments where salary is greater than 50,000, and sort departments alphabetically.
 Select distinct department from employees
 where salary > 50000
 order by department ASC;
+
+
+-- CTE
+-- Find employees earning more than ₹60,000
+with high_salary As(
+Select first_name, salary
+from employees
+where salary > 60000 )
+Select * from high_salary;
+
+
+-- Create a CTE named it_employees that displays the first name, salary, and department of employees who work in IT.
+with IT_emp As (
+Select first_name, salary, department from employees
+where Department = 'IT' )
+select * from IT_emp;
+
+-- Create a CTE named dept_salary that calculates the total salary for each department, then display only departments where the total salary is greater than ₹60,000.
+With Dept_salary AS (
+Select department , SUM(salary) AS total_salary
+from employees
+group by department )
+Select * from Dept_salary
+where total_salary > 60000;
+
+-- Create a CTE named dept_avg to calculate the average salary for each department, then display only departments whose average salary is greater than ₹55,000.
+
+With dept_avg As ( 
+Select department, AVG(salary) AS AVG_salary
+from employees
+group by department )
+Select * from dept_avg
+where AVG_salary > 55000 ;
