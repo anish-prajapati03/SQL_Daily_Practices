@@ -504,3 +504,32 @@ from employees e
 Join dept_max d
 On e.department = d.department
 where e.salary = d.max_salary;
+
+-- Create a CTE named dept_min to calculate the minimum salary in each department. Then join it with employees to display the employees earning the minimum salary in their department.
+With dept_min As(
+Select department,Min(salary) as min_salary
+from employees 
+group by department )
+Select e.first_name, e.department, e.salary, d.min_salary
+from employees e
+Join dept_min d
+On e.department = d.department 
+Where e.salary = d.min_salary;
+
+
+-- Create a CTE named dept_count to count employees in each department. Then join it with employees and display:
+-- first_name
+-- department
+-- total_employees in that department
+
+With dept_count AS(
+Select department, Count(*) As total_emp
+from employees 
+group by department )
+Select e.first_name, e.department, e.salary, d.total_emp
+from employees e
+Join dept_count d
+On e.department = d.department;
+
+
+
