@@ -472,3 +472,35 @@ from employees
 group by department )
 Select * from dept_avg
 where AVG_salary > 55000 ;
+
+-- Create a CTE named dept_avg that calculates the average salary of each department. Then join it with the employees table to display:
+-- first_name
+-- department
+-- salary
+-- avg_salary
+
+With dept_avg As(
+Select department, avg(salary) as avg_salary
+from employees
+group by department 
+)
+Select 
+e.first_name,
+e.department,
+e.salary,
+d.avg_salary 
+from employees e
+Join dept_avg d
+   On e.department = d.department 
+Where e.salary > d.avg_salary;
+
+-- Create a CTE named dept_max to calculate the maximum salary in each department. Then join it with employees to display employees who earn the maximum salary in their department.
+With dept_max As(
+Select department ,max(salary) as max_salary
+from employees e
+group by department)
+Select e.first_name, e.department, e.salary, d.max_salary
+from employees e
+Join dept_max d
+On e.department = d.department
+where e.salary = d.max_salary;
